@@ -3,7 +3,10 @@
 #include <time.h>
 
 
-char[] GPIO_LED_NUMBER = "26";
+char[3] GPIO_LED_NUMBER;
+GPIO_LED_NUMBER[0] = '2';
+GPIO_LED_NUMBER[1] = '6';
+GPIO_LED_NUMBER[2] = '\0';
 
 
 /**
