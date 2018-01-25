@@ -3,12 +3,6 @@
 #include <time.h>
 
 
-char[3] GPIO_LED_NUMBER;
-GPIO_LED_NUMBER[0] = '2';
-GPIO_LED_NUMBER[1] = '6';
-GPIO_LED_NUMBER[2] = '\0';
-
-
 /**
  * Initialization of the GPIO
  * 
@@ -101,6 +95,11 @@ int destroy_gpio(char[2] gpioNumber) {
 
 
 int main() {
+	const char[] GPIO_LED_NUMBER = "26";
+	// GPIO_LED_NUMBER[0] = '2';
+	// GPIO_LED_NUMBER[1] = '6';
+	// GPIO_LED_NUMBER[2] = '\0';
+
 	// Initialization of the GPIO:
 	intit_gpio(GPIO_LED_NUMBER, 1);
 
