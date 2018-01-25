@@ -14,16 +14,16 @@ int destroy_gpio(char[2]);
 /* ##               MAIN             ## */
 /* #################################### */
 int main() {
-	const char[] GPIO_LED_NUMBER = "26";
-	// GPIO_LED_NUMBER[0] = '2';
-	// GPIO_LED_NUMBER[1] = '6';
-	// GPIO_LED_NUMBER[2] = '\0';
+	char[2] gpioLedNumber;  // = "26";
+	gpioLedNumber[0] = '2';
+	gpioLedNumber[1] = '6';
+	gpioLedNumber[2] = '\0';
 
 	// Initialization of the GPIO:
-	init_gpio(GPIO_LED_NUMBER, 1);
+	init_gpio(gpioLedNumber, 1);
 
 	// Writing:
-	write_gpio(GPIO_LED_NUMBER, 1);
+	write_gpio(gpioLedNumber, 1);
 
 	// To let some time pass:
 	int i;
@@ -32,7 +32,7 @@ int main() {
 	}
 
 	//Destroying the GPIO:
-	destroy_gpio(GPIO_LED_NUMBER);
+	destroy_gpio(gpioLedNumber);
 
 	return 0;
 }
