@@ -51,25 +51,25 @@ int main() {
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing the expected state of the GPIO: '0' for Off and '1' for On.
  */
-int write_gpio(char[2] gpioNumber, int state) {
-	// Changing the state:
+// int write_gpio(char[2] gpioNumber, int state) {
+// 	// Changing the state:
 
-	// 		Changing the state of the gpio:
-	char path[31];
-	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
+// 	// 		Changing the state of the gpio:
+// 	char path[31];
+// 	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
 
-	FILE *GPIO_VALUE = fopen(path, "w");
-	if (state == 1) {
-		fprintf(GPIO_VALUE, "1");
-	}
-	else {
-		fprintf(GPIO_VALUE, "0");
-	}
-	fclose(GPIO_VALUE);
+// 	FILE *GPIO_VALUE = fopen(path, "w");
+// 	if (state == 1) {
+// 		fprintf(GPIO_VALUE, "1");
+// 	}
+// 	else {
+// 		fprintf(GPIO_VALUE, "0");
+// 	}
+// 	fclose(GPIO_VALUE);
 
-	printf("The GPIO_%s's value is %d \n", gpioNumber, state);
-	return 0;
-}
+// 	printf("The GPIO_%s's value is %d \n", gpioNumber, state);
+// 	return 0;
+// }
 
 
 /**
