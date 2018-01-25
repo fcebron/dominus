@@ -28,11 +28,11 @@ int intit_gpio(int gpio, int state) {
 	itoa(gpioState, state, 10);
 
 	// 		- Storing the path of the gpio for future writing:
-	char stateFile[32];
+	char stateFile[31];
 	fprintf(stateFile, "/sys/class/gpio/gpio%d/direction", gpio);
 
 	// 		- Setting-up the gpio:
-	char state_gpio[3];
+	char state_gpio[4];
 	if (state == 1) {
 		state_gpio[0] = 'i';
 		state_gpio[1] = 'n';
@@ -52,12 +52,23 @@ int intit_gpio(int gpio, int state) {
 	write_gpio(gpio, 0);
 
 	// 		Pretty message:
-	char state_char[6];
+	char state_char[7];
 	if (state == 0) {
-		state_char = "Output";
+		state_char[0] = 'O';
+		state_char[1] = 'u';
+		state_char[2] = 't';
+		state_char[3] = 'p';
+		state_char[4] = 'u';
+		state_char[5] = 't';
+		state_char[6] = '\0';
 	}
 	else {
-		state_char = "Intput";
+		state_char[0] = 'I';
+		state_char[1] = 'n';
+		state_char[2] = 'p';
+		state_char[3] = 'u';
+		state_char[4] = 't';
+		state_char[5] = '\0';
 	}
 
 	printf("The GPIO_%d is created as an %s !\n", gpio, state_char);
@@ -78,7 +89,7 @@ write_gpio(int gpio, int state) {
 	itoa(gpio, gpioNumber, 10);  // 10 is for the decimal-base
 
 	// 		Changing the state of the gpio:
-	char path[35];
+	char path[31];
 	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
 	FILE *GPIO_VALUE = fopen(path, "w");
 	fprintf(GPIO_VALUE, state);
