@@ -18,10 +18,10 @@ int destroy_gpio(char[2]);
 /* ##               MAIN             ## */
 /* #################################### */
 int main() {
-	// char[2] gpioLedNumber;  // = "26";
-	// gpioLedNumber[0] = '2';
-	// gpioLedNumber[1] = '6';
-	// gpioLedNumber[2] = '\0';
+	char[2] gpioLedNumber;  // = "26";
+	gpioLedNumber[0] = '2';
+	gpioLedNumber[1] = '6';
+	gpioLedNumber[2] = '\0';
 
 	// // Initialization of the GPIO:
 	// init_gpio(gpioLedNumber, 1);
