@@ -17,7 +17,8 @@ int destroy_gpio(char[2]);
 /* #################################### */
 /* ##               MAIN             ## */
 /* #################################### */
-int main() {
+int main() 
+{	
 	char[2] gpioLedNumber;  // = "26";
 	gpioLedNumber[0] = '2';
 	gpioLedNumber[1] = '6';
