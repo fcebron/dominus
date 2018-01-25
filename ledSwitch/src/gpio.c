@@ -1,6 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+
+
+int write_gpio(char[2], int);
+int init_gpio(char[2], int);
+int destroy_gpio(char[2]);
+
+
+/**
+ * Writing on the GPIO
+ * 
+ * @param gpio: int containing the number of the GPIO
+ * @param state: int containing the expected state of the GPIO: '0' for Off and '1' for On.
+ */
+int write_gpio(char[2] gpioNumber, int state) {
+	// Changing the state:
+
+	// 		Changing the state of the gpio:
+	char path[31];
+	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
+
+	FILE *GPIO_VALUE = fopen(path, "w");
+	if (state == 1) {
+		fprintf(GPIO_VALUE, "1");
+	}
+	else {
+		fprintf(GPIO_VALUE, "0");
+	}
+	fclose(GPIO_VALUE);
+
+	printf("The GPIO_%s's value is %d \n", gpioNumber, state);
+	return 0;
+}
 
 
 /**
@@ -9,7 +40,7 @@
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing '0' if Output or '1' if Input 
  */
-int intit_gpio(char[2] gpioNumber, int state) {
+int init_gpio(char[2] gpioNumber, int state) {
 	// Creation:
 	// 		Defining the gpio:
 	FILE *GPIO_CREATION = fopen("/sys/class/gpio/export", "w");
@@ -48,33 +79,6 @@ int intit_gpio(char[2] gpioNumber, int state) {
 
 
 /**
- * Writing on the GPIO
- * 
- * @param gpio: int containing the number of the GPIO
- * @param state: int containing the expected state of the GPIO: '0' for Off and '1' for On.
- */
-int write_gpio(char[2] gpioNumber, int state) {
-	// Changing the state:
-
-	// 		Changing the state of the gpio:
-	char path[31];
-	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
-
-	FILE *GPIO_VALUE = fopen(path, "w");
-	if (state == 1) {
-		fprintf(GPIO_VALUE, "1");
-	}
-	else {
-		fprintf(GPIO_VALUE, "0");
-	}
-	fclose(GPIO_VALUE);
-
-	printf("The GPIO_%s's value is %d \n", gpioNumber, state);
-	return 0;
-}
-
-
-/**
  * Closing the GPIO
  * 
  * @param gpio: int containing the number of the GPIO
@@ -101,7 +105,7 @@ int main() {
 	// GPIO_LED_NUMBER[2] = '\0';
 
 	// Initialization of the GPIO:
-	intit_gpio(GPIO_LED_NUMBER, 1);
+	init_gpio(GPIO_LED_NUMBER, 1);
 
 	// Writing:
 	write_gpio(GPIO_LED_NUMBER, 1);
