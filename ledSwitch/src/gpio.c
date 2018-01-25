@@ -7,7 +7,9 @@
 /* ##            PROTOTYPES          ## */
 /* #################################### */
 int write_gpio(char[2], int);
+
 int init_gpio(char[2], int);
+
 int destroy_gpio(char[2]);
 
 
@@ -16,25 +18,25 @@ int destroy_gpio(char[2]);
 /* ##               MAIN             ## */
 /* #################################### */
 int main() {
-	char[2] gpioLedNumber;  // = "26";
-	gpioLedNumber[0] = '2';
-	gpioLedNumber[1] = '6';
-	gpioLedNumber[2] = '\0';
+	// char[2] gpioLedNumber;  // = "26";
+	// gpioLedNumber[0] = '2';
+	// gpioLedNumber[1] = '6';
+	// gpioLedNumber[2] = '\0';
 
-	// Initialization of the GPIO:
-	init_gpio(gpioLedNumber, 1);
+	// // Initialization of the GPIO:
+	// init_gpio(gpioLedNumber, 1);
 
-	// Writing:
-	write_gpio(gpioLedNumber, 1);
+	// // Writing:
+	// write_gpio(gpioLedNumber, 1);
 
-	// To let some time pass:
-	int i;
-	for (i = 0; i < 150; i ++) {
-		printf("i = %d\n", i);
-	}
+	// // To let some time pass:
+	// int i;
+	// for (i = 0; i < 150; i ++) {
+	// 	printf("i = %d\n", i);
+	// }
 
-	//Destroying the GPIO:
-	destroy_gpio(gpioLedNumber);
+	// //Destroying the GPIO:
+	// destroy_gpio(gpioLedNumber);
 
 	return 0;
 }
@@ -76,42 +78,42 @@ int write_gpio(char[2] gpioNumber, int state) {
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing '0' if Output or '1' if Input 
  */
-int init_gpio(char[2] gpioNumber, int state) {
-	// Creation:
-	// 		Defining the gpio:
-	FILE *GPIO_CREATION = fopen("/sys/class/gpio/export", "w");
-	fprintf(GPIO_CREATION, gpioNumber);
-	fclose(GPIO_CREATION);
+// int init_gpio(char[2] gpioNumber, int state) {
+// 	// Creation:
+// 	// 		Defining the gpio:
+// 	FILE *GPIO_CREATION = fopen("/sys/class/gpio/export", "w");
+// 	fprintf(GPIO_CREATION, gpioNumber);
+// 	fclose(GPIO_CREATION);
 
 
-	// Setting-up the type state of the gpio (input or output)
-	// 		- Storing the path of the gpio for future writing:
-	char stateFile[31];
-	fprintf(stateFile, "/sys/class/gpio/gpio%d/direction", gpioNumber);
+// 	// Setting-up the type state of the gpio (input or output)
+// 	// 		- Storing the path of the gpio for future writing:
+// 	char stateFile[31];
+// 	fprintf(stateFile, "/sys/class/gpio/gpio%d/direction", gpioNumber);
 
-	// 		- Setting-up the gpio:
-	FILE *GPIO_STATE = fopen(stateFile, "w");
-	if (state == 1) {
-		fprintf(GPIO_STATE, "In");
-	}
-	else {
-		fprintf(GPIO_STATE, "out");
-	}
-	fclose(GPIO_STATE);
+// 	// 		- Setting-up the gpio:
+// 	FILE *GPIO_STATE = fopen(stateFile, "w");
+// 	if (state == 1) {
+// 		fprintf(GPIO_STATE, "In");
+// 	}
+// 	else {
+// 		fprintf(GPIO_STATE, "out");
+// 	}
+// 	fclose(GPIO_STATE);
 
-	// Turning off the GPIO:
-	write_gpio(gpioNumber, 0);
+// 	// Turning off the GPIO:
+// 	write_gpio(gpioNumber, 0);
 
-	// 		Pretty message:
-	char state_char[7];
-	if (state == 0) {
-		printf("The GPIO_%s is created as an Output !\n", gpioNumber);
-	}
-	else {
-		printf("The GPIO_%s is created as an Input !\n", gpioNumber);	
-	}
-	return 0;
-}
+// 	// 		Pretty message:
+// 	char state_char[7];
+// 	if (state == 0) {
+// 		printf("The GPIO_%s is created as an Output !\n", gpioNumber);
+// 	}
+// 	else {
+// 		printf("The GPIO_%s is created as an Input !\n", gpioNumber);	
+// 	}
+// 	return 0;
+// }
 
 
 /**
@@ -119,16 +121,16 @@ int init_gpio(char[2] gpioNumber, int state) {
  * 
  * @param gpio: int containing the number of the GPIO
  */
-int destroy_gpio(char[2] gpioNumber) {
-	// Turning off the GPIO:
-	write_gpio(gpioNumber, 0);
+// int destroy_gpio(char[2] gpioNumber) {
+// 	// Turning off the GPIO:
+// 	write_gpio(gpioNumber, 0);
 
-	// Closing:
-	// 		Closing the gpio:
-	FILE *GPIO_DESTRUCTION = fopen("/sys/class/gpio/unexport", "w");
-	fprintf(GPIO_DESTRUCTION, gpioNumber);
-	fclose(GPIO_DESTRUCTION);
+// 	// Closing:
+// 	// 		Closing the gpio:
+// 	FILE *GPIO_DESTRUCTION = fopen("/sys/class/gpio/unexport", "w");
+// 	fprintf(GPIO_DESTRUCTION, gpioNumber);
+// 	fclose(GPIO_DESTRUCTION);
 
-	printf("The GPIO_%s was closed !\n", gpioNumber);
-	return 0;
-}
+// 	printf("The GPIO_%s was closed !\n", gpioNumber);
+// 	return 0;
+// }
