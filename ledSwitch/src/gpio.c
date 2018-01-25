@@ -6,9 +6,9 @@
 /* #################################### */
 /* ##            PROTOTYPES          ## */
 /* #################################### */
-int write_gpio(char[2], int);
-int init_gpio(char[2], int);
-int destroy_gpio(char[2]);
+int write_gpio(char[2] gpioNumber, int state);
+int init_gpio(char[2] gpioNumber, int state);
+int destroy_gpio(char[2] gpioNumber);
 
 
 
