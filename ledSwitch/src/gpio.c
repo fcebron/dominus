@@ -114,4 +114,6 @@ int main() {
 
 	//Destroying the GPIO:
 	destroy_gpio(GPIO_LED_NUMBER);
+
+	return 0;
 }
