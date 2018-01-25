@@ -3,7 +3,7 @@
 #include <time.h>
 
 
-const char[] GPIO_LED_NUMBER = "26";
+char[] GPIO_LED_NUMBER = "26";
 
 
 /**
