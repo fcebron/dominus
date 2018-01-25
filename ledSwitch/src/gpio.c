@@ -1,12 +1,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+/* #################################### */
+/* ##            PROTOTYPES          ## */
+/* #################################### */
 int write_gpio(char[2], int);
 int init_gpio(char[2], int);
 int destroy_gpio(char[2]);
 
 
+
+/* #################################### */
+/* ##               MAIN             ## */
+/* #################################### */
+int main() {
+	const char[] GPIO_LED_NUMBER = "26";
+	// GPIO_LED_NUMBER[0] = '2';
+	// GPIO_LED_NUMBER[1] = '6';
+	// GPIO_LED_NUMBER[2] = '\0';
+
+	// Initialization of the GPIO:
+	init_gpio(GPIO_LED_NUMBER, 1);
+
+	// Writing:
+	write_gpio(GPIO_LED_NUMBER, 1);
+
+	// To let some time pass:
+	int i;
+	for (i = 0; i < 150; i ++) {
+		printf("i = %d\n", i);
+	}
+
+	//Destroying the GPIO:
+	destroy_gpio(GPIO_LED_NUMBER);
+
+	return 0;
+}
+
+
+/* #################################### */
+/* ##            FUNCTIONS           ## */
+/* #################################### */
 /**
  * Writing on the GPIO
  * 
@@ -94,30 +128,5 @@ int destroy_gpio(char[2] gpioNumber) {
 	fclose(GPIO_DESTRUCTION);
 
 	printf("The GPIO_%s was closed !\n", gpioNumber);
-	return 0;
-}
-
-
-int main() {
-	const char[] GPIO_LED_NUMBER = "26";
-	// GPIO_LED_NUMBER[0] = '2';
-	// GPIO_LED_NUMBER[1] = '6';
-	// GPIO_LED_NUMBER[2] = '\0';
-
-	// Initialization of the GPIO:
-	init_gpio(GPIO_LED_NUMBER, 1);
-
-	// Writing:
-	write_gpio(GPIO_LED_NUMBER, 1);
-
-	// To let some time pass:
-	int i;
-	for (i = 0; i < 150; i ++) {
-		printf("i = %d\n", i);
-	}
-
-	//Destroying the GPIO:
-	destroy_gpio(GPIO_LED_NUMBER);
-
 	return 0;
 }
