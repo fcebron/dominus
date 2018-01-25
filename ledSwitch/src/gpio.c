@@ -56,7 +56,7 @@ int intit_gpio(char[2] gpioNumber, int state) {
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing the expected state of the GPIO: '0' for Off and '1' for On.
  */
-write_gpio(char[2] gpioNumber, int state) {
+int write_gpio(char[2] gpioNumber, int state) {
 	// Changing the state:
 
 	// 		Changing the state of the gpio:
