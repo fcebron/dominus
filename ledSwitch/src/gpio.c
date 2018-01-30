@@ -58,8 +58,8 @@ int write_gpio(const char *gpioNumber, int state) {
 	// Changing the state:
 
 	// 		Changing the state of the gpio:
-	char path[31];
-	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
+	char path[32];
+	fprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
 
 	FILE *GPIO_VALUE = fopen(path, "w");
 	if (state == 1) {
@@ -91,8 +91,8 @@ int init_gpio(const char *gpioNumber, int state) {
 
 	// Setting-up the type state of the gpio (input or output)
 	// 		- Storing the path of the gpio for future writing:
-	unsigned char *stateFile[31];
-	fprintf(stateFile, "/sys/class/gpio/gpio%s/direction", gpioNumber);
+	char stateFile[33];
+	snprintf(stateFile, "/sys/class/gpio/gpio%s/direction", gpioNumber);
 
 	// 		- Setting-up the gpio:
 	FILE *GPIO_STATE = fopen(stateFile, "w");
