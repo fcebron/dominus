@@ -59,7 +59,7 @@ int write_gpio(const char *gpioNumber, int state) {
 
 	// 		Changing the state of the gpio:
 	char path[32];
-	fprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
+	snprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
 
 	FILE *GPIO_VALUE = fopen(path, "w");
 	if (state == 1) {
