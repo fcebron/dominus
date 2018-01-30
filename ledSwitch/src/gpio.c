@@ -24,7 +24,7 @@ int destroy_gpio(const char*);
 /* #################################### */
 int main() 
 {	
-	const char *gpioLedNumber = "26";
+	const char gpioLedNumber[] = "26";
 
 	// Initialization of the GPIO:
 	init_gpio(gpioLedNumber, 1);
@@ -59,7 +59,7 @@ int write_gpio(const char *gpioNumber, int state) {
 
 	// 		Changing the state of the gpio:
 	char path[32];
-	snprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
+	sprintf(path, "/sys/class/gpio/export/%s/value", gpioNumber);
 
 	FILE *GPIO_VALUE = fopen(path, "w");
 	if (state == 1) {
@@ -92,7 +92,7 @@ int init_gpio(const char *gpioNumber, int state) {
 	// Setting-up the type state of the gpio (input or output)
 	// 		- Storing the path of the gpio for future writing:
 	char stateFile[33];
-	snprintf(stateFile, "/sys/class/gpio/gpio%s/direction", gpioNumber);
+	sprintf(stateFile, "/sys/class/gpio/gpio%s/direction", gpioNumber);
 
 	// 		- Setting-up the gpio:
 	FILE *GPIO_STATE = fopen(stateFile, "w");
