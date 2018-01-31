@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <unistd.h>
+#include <unistd.h>
+#include <string.h>
+#include <ctype.h>
+#include <sys/types.h>
+#include <wchar.h>
+#include <wctype.h>
+#include <limits.h>
 
 /* #################################### */
 /* ##            PROTOTYPES          ## */
@@ -32,14 +38,14 @@ int main()
 	// To let some time pass:
 	printf("=> Starting to lose some time!\n");
 	int i;
-	for (i = 0; i < 150000; i ++) {
+	for (i = 0; i < 150; i ++) {
 		printf("i = %d\n", i);
 	}
 	printf("=> End of losing some time!\n");
 
 	//Destroying the GPIO:
-	destroy_gpio(gpioLedNumber);
-	printf("=> End of function 'destroy_gpio'!\n");
+	//destroy_gpio(gpioLedNumber);
+	//printf("=> End of function 'destroy_gpio'!\n");
 
 	return 0;
 }
