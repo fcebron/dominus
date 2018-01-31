@@ -127,7 +127,7 @@ int main(int argc, char *argv[]) {
 
 	    printf("Message Received: ");
 	    puts(mess);*/
-	    sleep(1);
+	    sleep(10);
 	}
 	close(sockfd);
 	sleep(1);
