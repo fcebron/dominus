@@ -6,8 +6,15 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <signal.h>
+#include <unistd.h>
+
+int newsockfd;
+
 
 void error(char *);
+
+void signals_handler(int signal_number);
 
 int main(int argc, char *argv[]) {
 
@@ -15,7 +22,7 @@ int main(int argc, char *argv[]) {
     FILE* fileData = fopen ("server.conf","r");
     if (fileData == NULL) {
         printf ("ERROR: no 'server.conf' file found!\n");
-        return 1;
+        exit(1);
     }
 
     int ierr,
@@ -23,15 +30,21 @@ int main(int argc, char *argv[]) {
     ierr = fscanf (fileData,"%d", &(port_no));
     if (ierr != 1) {
         printf ("ERROR: the file is empty\n");
-        return 1;
+        exit(1);
     }
     //printf("Socket read\n");
     
     fclose (fileData);
 
 
+    // To catch ctrl + C:
+    struct sigaction action;
+    action.sa_handler = signals_handler;
+    sigemptyset(& (action.sa_mask));
+    action.sa_flags = 0;
+    sigaction(SIGINT, & action, NULL);
+
     int sockfd,
-        newsockfd,
         n,
         serv_size,
         cli_size,
@@ -77,8 +90,8 @@ int main(int argc, char *argv[]) {
         error("Failed to accept connections from client!\n");
     }
 
-    printf("Server received connections from %s\n", (char *)inet_ntoa(cli_addr.sin_addr)); 
-        
+    //printf("Server received connections from %s\n", (char *)inet_ntoa(cli_addr.sin_addr)); 
+
     while(1)
     {   
         bzero(p, sizeof(sbuffer));
@@ -89,7 +102,7 @@ int main(int argc, char *argv[]) {
         /*if (sbuffer[0] == 'q') {
             break;
         }*/
-        printf("Message Received: ");
+        //printf("Message Received: ");
         if (strcmp(sbuffer, "light_on") == 0) {
             printf("111111111\n");
             // TODO: call gpio
@@ -114,7 +127,15 @@ int main(int argc, char *argv[]) {
 }
 
 
+//-----------------------------------------------------------------------------
 void error(char *msg) {
     perror(msg);
     exit(1);
+}
+
+void signals_handler(int signal_number) {
+    printf("Signal catched.\n");
+    close(newsockfd);
+    sleep(1);
+    exit(EXIT_SUCCESS);
 }

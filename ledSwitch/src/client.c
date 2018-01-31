@@ -5,8 +5,17 @@
 #include<sys/types.h>
 #include<netinet/in.h>
 #include<netdb.h>
+#include <signal.h>
+#include <unistd.h>
+
+int sockfd;
+
 
 void error(char *);
+
+void signals_handler(int signal_number);
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -14,7 +23,7 @@ int main(int argc, char *argv[]) {
 	FILE* fileData = fopen ("client.conf","r");
 	if (fileData == NULL) {
 		printf ("ERROR: no data 'client.conf' file found!\n");
-		return 1;
+		exit(1);
 	}
 
 	int ierr,
@@ -22,7 +31,7 @@ int main(int argc, char *argv[]) {
 	ierr = fscanf (fileData,"%d", &(port_no));
 	if (ierr != 1) {
 		printf ("ERROR: the file is empty\n");
-		return 1;
+		exit(1);
 	}
 	//printf("Socket read\n");
 
@@ -30,25 +39,30 @@ int main(int argc, char *argv[]) {
 	ierr = fscanf (fileData,"%s", &(ip));
 	if (ierr != 1) {
 		printf ("ERROR: the file is empty\n");
-		return 1;
+		exit(1);
 	}
-	printf("ip read\n");
+	//printf("ip read\n");
 	
 	fclose (fileData);
 
+    // To catch ctrl + C:
+    struct sigaction action;
+    action.sa_handler = signals_handler;
+    sigemptyset(& (action.sa_mask));
+    action.sa_flags = 0;
+    sigaction(SIGINT, & action, NULL);
 
 
-
-
-	int sockfd, 
-	    newsockfd, 
+	int newsockfd, 
 	    n, 
 	    connectfd, 
 	    readfd, 
 	    writefd;
 
-	char cbuffer[256];
-	char *ptr = &cbuffer[0];
+	char mess[256],
+	     saved[256];
+	saved[0] = '\0';
+	char *ptr = &mess[0];
 
 	struct sockaddr_in serv_addr;
 	struct hostent *he;
@@ -73,28 +87,49 @@ int main(int argc, char *argv[]) {
 	    error("Sorry. Could not connect to server.\n");
 	}
 
+
+
 	while(1)
 	{   
-	    bzero(ptr, sizeof(cbuffer));
-	    printf("\nEnter message for Server: \n");
-	    gets(cbuffer);
-	    writefd = write(sockfd, ptr, sizeof(cbuffer));
-	    if (cbuffer[0] == 'q') {
-	    	break;
+	    bzero(ptr, sizeof(mess));
+	    //printf("\nEnter message for Server: \n");
+	    //gets(mess);
+
+		FILE* fileData = fopen ("/opt/domoticz/scripts/light.dat","r");
+		if (fileData == NULL) {
+			printf ("ERROR: no data '/opt/domoticz/scripts/light.dat' file found!\n");
+			exit(1);
+		}
+
+		int ierr;
+		ierr = fscanf (fileData,"%s", &(mess));
+		if (ierr != 1) {
+			printf ("ERROR: the file is empty\n");
+			exit(1);
+		}
+	    
+		fclose (fileData);
+		if (strcmp(mess, saved) != 0) {
+			writefd = write(sockfd, ptr, sizeof(mess));
+	    	strcpy(saved, mess);  // keep last data
 	    }
+	    /*if (mess[0] == 'q') {
+	    	break;
+	    }*/
 	    if (writefd == -1) {
 	        error("Sorry. Could not send message to Server.");
 	    }
 
-	    printf("Congratulations! Server Successfully Received your message.\n");    
+	    //printf("Congratulations! Server Successfully Received your message.\n");    
 
-	    /*bzero(ptr, sizeof(cbuffer));
-	    readfd = read(sockfd, ptr, sizeof(cbuffer));
+	    /*bzero(ptr, sizeof(mess));
+	    readfd = read(sockfd, ptr, sizeof(mess));
 	    if (readfd == -1)
 	        error("Sorry. Message from server could not be read.\n");
 
 	    printf("Message Received: ");
-	    puts(cbuffer);*/
+	    puts(mess);*/
+	    sleep(10);
 	}
 	close(sockfd);
 	sleep(1);
@@ -102,7 +137,18 @@ int main(int argc, char *argv[]) {
 }
 
 
+
+//-----------------------------------------------------------------------------
 void error(char *msg) {
 	perror(msg);
 	exit(1);
+}
+
+
+void signals_handler(int signal_number)
+{
+    printf("Signal catched.\n");
+    close(sockfd);
+    sleep(1);
+    exit(EXIT_SUCCESS);
 }
