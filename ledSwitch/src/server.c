@@ -9,7 +9,11 @@
 #include <signal.h>
 #include <unistd.h>
 
-int newsockfd;
+// External library:
+#include "gpio.h"
+
+int gpioLedNumber = 17,
+    newsockfd;
 
 
 void error(char *);
@@ -36,7 +40,7 @@ int main(int argc, char *argv[]) {
     
     fclose (fileData);
 
-
+    init_gpio(gpioLedNumber, 0);
     // To catch ctrl + C:
     struct sigaction action;
     action.sa_handler = signals_handler;
@@ -105,10 +109,12 @@ int main(int argc, char *argv[]) {
         //printf("Message Received: ");
         if (strcmp(sbuffer, "light_on") == 0) {
             printf("111111111\n");
+            write_gpio(gpioLedNumber, 1);
             // TODO: call gpio
         }
         else if (strcmp(sbuffer, "light_off") == 0) {
             printf("000000000\n");
+            write_gpio(gpioLedNumber, 0);
             // TODO: call gpio
         }
         puts(sbuffer);
@@ -122,6 +128,7 @@ int main(int argc, char *argv[]) {
         printf("Congratulations! Message has been sent to client.\n");  */
     }       
     close(newsockfd);
+    destroy_gpio(gpioLedNumber);
     sleep(1);
     return 0;   
 }
@@ -136,6 +143,7 @@ void error(char *msg) {
 void signals_handler(int signal_number) {
     printf("Signal catched.\n");
     close(newsockfd);
+    destroy_gpio(gpioLedNumber);
     sleep(1);
     exit(EXIT_SUCCESS);
 }
