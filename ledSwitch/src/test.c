@@ -10,7 +10,7 @@
 /* #################################### */
 int main() {	
 	printf("Begining of the program !\n");
-	int gpioLedNumber = 26;
+	int gpioLedNumber = 17;
 
 	// Initialization of the GPIO:
 	init_gpio(gpioLedNumber, 0);

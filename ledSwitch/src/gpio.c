@@ -13,6 +13,11 @@
  * 
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing the expected state of the GPIO: '0' for Off and '1' for On.
+ * 
+ * TODO: add tests of success of faillure for the creation of the files
+ *       check if the folders/files exists before trying to create them
+ *       add true error messages
+ *       add true return signals
  */
 int write_gpio(int gpioNumber, int state) {
 	if (gpioNumber <= 27) {
@@ -49,6 +54,11 @@ int write_gpio(int gpioNumber, int state) {
  * 
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing '0' if Output or '1' if Input 
+ *
+ * TODO: add tests of success of faillure for the creation of the files
+ *       check if the folders/files exists before trying to create them
+ *       add true error messages
+ *       add true return signals
  */
 int init_gpio(int gpioNumber, int inOut) {
 	if (gpioNumber <= 27) {
@@ -107,6 +117,11 @@ int init_gpio(int gpioNumber, int inOut) {
  * Closing the GPIO
  * 
  * @param gpio: int containing the number of the GPIO
+ *
+ * TODO: add tests of success of faillure for the creation of the files
+ *       check if the folders/files exists before trying to create them
+ *       add true error messages
+ *       add true return signals
  */
 int destroy_gpio(int gpioNumber) {
 	if (gpioNumber <= 27) {
