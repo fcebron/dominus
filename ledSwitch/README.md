@@ -9,4 +9,9 @@ The raspberry has a ground going to the relay and the GPIO 17, going to the sign
 If you want to use the binaries on another Raspberry, you need to know that the files 'client' and 'server' have to be on the user's folders, and  this is the same with the associated files 'server.conf' and 'client.conf'. If you use the same raspberry to test it, you won't have to change anything. If you want to use 2 separates raspberry, you will need to change the ip of the server which is the first line of the 'client.conf' file. The second one of the client.conf file is the socket used. The servers has only one argument inside its config file, which is the socket used.
 Moreover, the client must have the two scripts ('switch0_on.sh' and 'switch0_off.sh') included in the 'scripts' folder of the 'dominus' repository in '/opt/domoticz/scripts/' of the client. To finish, all the binaries ('client' and 'server') have to be launched in sudo (root user) mode.
 
-The fulled-feature version will be in V6.
+
+V5 : les scripts à mettre dans /opt/domoticz/scripts sont dans les répertoires src/domoticz/scripts du dépot dominus.
+Pour que le tout marche, il faut faire (en utilisateur normal) : echo "light_off" > /tmp/light.dat sur la raspberry.
+Puis lancer le client et le serveur. Je n'ai pas réussi à lancer avec init.d .
+
+François Cebron / Philipe Miranda de moura / Mohamad Mezher
