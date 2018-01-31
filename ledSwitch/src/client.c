@@ -95,9 +95,9 @@ int main(int argc, char *argv[]) {
 	    //printf("\nEnter message for Server: \n");
 	    //gets(mess);
 
-		FILE* fileData = fopen ("/opt/domoticz/scripts/light.dat","r");
+		FILE* fileData = fopen ("/tmp/light.dat","r");
 		if (fileData == NULL) {
-			printf ("ERROR: no data '/opt/domoticz/scripts/light.dat' file found!\n");
+			printf ("ERROR: no data '/tmp/light.dat' file found!\n");
 			exit(1);
 		}
 
@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
 
 	    printf("Message Received: ");
 	    puts(mess);*/
-	    sleep(10);
+	    sleep(1);
 	}
 	close(sockfd);
 	sleep(1);
