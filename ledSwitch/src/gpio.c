@@ -26,7 +26,7 @@ int write_gpio(int gpioNumber, int state) {
 		if (state == 1) {
 			fprintf(GPIO_VALUE, "1");
 		}
-		else if {
+		if (state == 0) {
 			fprintf(GPIO_VALUE, "0");
 		}
 		else {
@@ -70,7 +70,7 @@ int init_gpio(int gpioNumber, int inOut) {
 		FILE *GPIO_STATE = fopen(stateFile, "w");
 		if (inOut == 1) {
 			fprintf(GPIO_STATE, "In");
-	 		printf("The GPIO_%s is created as an Input !\n", gpioNumber);
+	 		printf("The GPIO_%d is created as an Input !\n", gpioNumber);
 	
 			fclose(GPIO_STATE);
 
