@@ -34,7 +34,7 @@ int write_gpio(int gpioNumber, int state) {
 		}
 		fclose(GPIO_VALUE);
 
-		printf("The GPIO_%ds's value is %d \n", gpioNumber, state);
+		//printf("The GPIO_%ds's value is %d \n", gpioNumber, state);
 		return 0;
 	}
 	else {
@@ -59,7 +59,7 @@ int init_gpio(int gpioNumber, int inOut) {
 		snprintf(nb, 3, "%d", gpioNumber);  // cast
 		fprintf(GPIO_CREATION, nb);
 		fclose(GPIO_CREATION);
-		printf("--> GPIO created!\n");
+		//printf("--> GPIO created!\n");
 
 
 		// Setting-up the type state of the gpio (input or output)
@@ -72,7 +72,7 @@ int init_gpio(int gpioNumber, int inOut) {
 		FILE *GPIO_STATE = fopen(stateFile, "w");
 		if (inOut == 1) {
 			fprintf(GPIO_STATE, "In");
-	 		printf("The GPIO_%d is created as an Input !\n", gpioNumber);
+	 		//printf("The GPIO_%d is created as an Input !\n", gpioNumber);
 	
 			fclose(GPIO_STATE);
 
@@ -82,7 +82,7 @@ int init_gpio(int gpioNumber, int inOut) {
 		}
 		else if (inOut == 0) {
 			fprintf(GPIO_STATE, "out");
-			printf("The GPIO_%d is created as an Output !\n", gpioNumber);
+			//printf("The GPIO_%d is created as an Output !\n", gpioNumber);
 
 			fclose(GPIO_STATE);
 
@@ -112,7 +112,7 @@ int destroy_gpio(int gpioNumber) {
 	if (gpioNumber <= 27) {
 		// Turning off the GPIO:
 		write_gpio(gpioNumber, 0);
-		printf("--> GPIO stoped!\n");
+		//printf("--> GPIO stoped!\n");
 
 		// Closing:
 	 	// 		Closing the gpio:
@@ -122,7 +122,7 @@ int destroy_gpio(int gpioNumber) {
 	 	fprintf(GPIO_DESTRUCTION, nb);
 	 	fclose(GPIO_DESTRUCTION);
 
-	 	printf("The GPIO_%d was closed !\n", gpioNumber);
+	 	//printf("The GPIO_%d was closed !\n", gpioNumber);
 	 	return 0;
 	}
 	else {

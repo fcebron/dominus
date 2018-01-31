@@ -24,7 +24,7 @@ int main() {
 	printf("=> Starting to lose some time!\n");
 	int i;
 	for (i = 0; i < 150000; i ++) {
-		printf("i = %d\n", i);
+		printf("");
 	}
 	printf("=> End of losing some time!\n");
 
