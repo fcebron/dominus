@@ -1,4 +1,4 @@
-V3 : We have decided to create a client/server in a different architecture than the proposed one. So the domoticz server is hosted on the board which contains the client and the server is on the board hosting the LED/Relay.
+V4 : We have decided to create a client/server in a different architecture than the proposed one. So the domoticz server is hosted on the board which contains the client and the server is on the board hosting the LED/Relay.
 
 The relay is plugged in the following way :
 
@@ -9,4 +9,4 @@ The raspberry has a ground going to the relay and the GPIO 17, going to the sign
 If you want to use the binaries on another Raspberry, you need to know that the files 'client' and 'server' have to be on the user's folders, and  this is the same with the associated files 'server.conf' and 'client.conf'. If you use the same raspberry to test it, you won't have to change anything. If you want to use 2 separates raspberry, you will need to change the ip of the server which is the first line of the 'client.conf' file. The second one of the client.conf file is the socket used. The servers has only one argument inside its config file, which is the socket used.
 Moreover, the client must have the two scripts ('switch0_on.sh' and 'switch0_off.sh') included in the 'scripts' folder of the 'dominus' repository in '/opt/domoticz/scripts/' of the client. To finish, all the binaries ('client' and 'server') have to be launched in sudo (root user) mode.
 
-The fulled-feature version will be in V4.
+The fulled-feature version will be in V6.
