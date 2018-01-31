@@ -26,7 +26,7 @@ int write_gpio(int gpioNumber, int state) {
 		if (state == 1) {
 			fprintf(GPIO_VALUE, "1");
 		}
-		if (state == 0) {
+		else if (state == 0) {
 			fprintf(GPIO_VALUE, "0");
 		}
 		else {
