@@ -23,7 +23,7 @@ void signals_handler(int signal_number);
 int main(int argc, char *argv[]) {
 
     // Reading conf from the file 'server.conf':
-    FILE* fileData = fopen ("server.conf","r");
+    FILE* fileData = fopen ("/opt/dominus/server.conf","r");
     if (fileData == NULL) {
         printf ("ERROR: no 'server.conf' file found!\n");
         exit(1);

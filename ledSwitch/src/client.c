@@ -20,7 +20,7 @@ void signals_handler(int signal_number);
 int main(int argc, char *argv[]) {
 
     // Reading conf from the file 'client.conf':
-	FILE* fileData = fopen ("client.conf","r");
+	FILE* fileData = fopen ("/opt/dominus/client.conf","r");
 	if (fileData == NULL) {
 		printf ("ERROR: no data 'client.conf' file found!\n");
 		exit(1);
