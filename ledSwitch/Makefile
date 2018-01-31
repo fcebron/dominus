@@ -6,8 +6,8 @@ BIN = Led_Server
 all:
 	$(GCC) -Wall src/gpio.c -o bin/$(BIN)
 
-test_gpio:
-	$(GCC) -Wall src/gpio.c src/gpio.h src/test.c -o bin/gpio
+test:
+	$(GCC) -Wall src/gpio.c src/gpio.h src/test.c -o bin/test
 
 clean_all:
 	rm -f bin/*
