@@ -49,13 +49,13 @@ int main(int argc, char *argv[]) {
     sigaction(SIGINT, & action, NULL);
 
     int sockfd,
-        n,
-        serv_size,
-        cli_size,
+        //cli_size,
         bindfd,
         readfd,
-        writefd,
+        //writefd,
         listenfd;
+
+    unsigned int serv_size;
     
     char sbuffer[256];
     char *p;
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     }
 
     serv_size = sizeof(serv_addr);
-    cli_size = sizeof(cli_addr);
+    //cli_size = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &serv_size);
     if (newsockfd == -1) {
         error("Failed to accept connections from client!\n");
@@ -108,16 +108,14 @@ int main(int argc, char *argv[]) {
         }*/
         //printf("Message Received: ");
         if (strcmp(sbuffer, "light_on") == 0) {
-            printf("111111111\n");
             write_gpio(gpioLedNumber, 1);
-            // TODO: call gpio
+	    printf("GPIO Number %d, turned on\n", gpioLedNumber);
         }
         else if (strcmp(sbuffer, "light_off") == 0) {
-            printf("000000000\n");
             write_gpio(gpioLedNumber, 0);
-            // TODO: call gpio
+	    printf("GPIO Number %d, turned off\n", gpioLedNumber);
         }
-        puts(sbuffer);
+        //puts(sbuffer);
     
         /*bzero(p,  sizeof(sbuffer));
         printf("\nEnter Your Message for client: ");

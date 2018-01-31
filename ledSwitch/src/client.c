@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 	//printf("Socket read\n");
 
 	char ip[20];
-	ierr = fscanf (fileData,"%s", &(ip));
+	ierr = fscanf (fileData,"%s", ip);
 	if (ierr != 1) {
 		printf ("ERROR: the file is empty\n");
 		exit(1);
@@ -53,10 +53,8 @@ int main(int argc, char *argv[]) {
     sigaction(SIGINT, & action, NULL);
 
 
-	int newsockfd, 
-	    n, 
-	    connectfd, 
-	    readfd, 
+	int connectfd, 
+	    //readfd, 
 	    writefd;
 
 	char mess[256],
@@ -102,7 +100,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		int ierr;
-		ierr = fscanf (fileData,"%s", &(mess));
+		ierr = fscanf (fileData,"%s", mess);
 		if (ierr != 1) {
 			printf ("ERROR: the file is empty\n");
 			exit(1);
