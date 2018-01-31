@@ -1,48 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <unistd.h>
 
-/* #################################### */
-/* ##            PROTOTYPES          ## */
-/* #################################### */
-int write_gpio(const char*, int);
-
-int init_gpio(const char*, int);
-
-int destroy_gpio(const char*);
-
-
-
-/* #################################### */
-/* ##               MAIN             ## */
-/* #################################### */
-int main() 
-{	
-	printf("Begining of the program !\n");
-	const char gpioLedNumber[] = "26";
-
-	// Initialization of the GPIO:
-	init_gpio(gpioLedNumber, 0);
-	printf("=> End of function 'init_gpio'!\n");
-
-	// Writing:
-	write_gpio(gpioLedNumber, 1);
-	printf("=> End of function 'write_gpio'!\n");
-
-	// To let some time pass:
-	printf("=> Starting to lose some time!\n");
-	int i;
-	for (i = 0; i < 150000; i ++) {
-		printf("i = %d\n", i);
-	}
-	printf("=> End of losing some time!\n");
-
-	//Destroying the GPIO:
-	destroy_gpio(gpioLedNumber);
-	printf("=> End of function 'destroy_gpio'!\n");
-
-	return 0;
-}
+// External library:
+#include "gpio.h"
 
 
 /* #################################### */
@@ -54,25 +14,33 @@ int main()
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing the expected state of the GPIO: '0' for Off and '1' for On.
  */
-int write_gpio(const char *gpioNumber, int state) {
-	// Changing the state:
+int write_gpio(int gpioNumber, int state) {
+	if (gpioNumber <= 27) {
+		// Changing the state:
+		// 		Changing the state of the gpio:
+		int maxSize = 29;
+		char path[maxSize];
+		snprintf(path, maxSize, "/sys/class/gpio/gpio%d/value", gpioNumber);
 
-	// 		Changing the state of the gpio:
-	int maxSize = 29;
-	char path[maxSize];
-	snprintf(path, maxSize, "/sys/class/gpio/gpio%s/value", gpioNumber);
+		FILE *GPIO_VALUE = fopen(path, "w");
+		if (state == 1) {
+			fprintf(GPIO_VALUE, "1");
+		}
+		else if {
+			fprintf(GPIO_VALUE, "0");
+		}
+		else {
+			printf("Error in 'write_gpio' from gpio.h/c: 'state' needs to be equal to 0 (=Output) or 1 (=Input)!\n");
+		}
+		fclose(GPIO_VALUE);
 
-	FILE *GPIO_VALUE = fopen(path, "w");
-	if (state == 1) {
-		fprintf(GPIO_VALUE, "1");
+		printf("The GPIO_%ds's value is %d \n", gpioNumber, state);
+		return 0;
 	}
 	else {
-		fprintf(GPIO_VALUE, "0");
+		printf("Error in 'write_gpio' from gpio.h/c: 'gpioNumber' needs to be <= 27!\n");
+		return 1;
 	}
-	fclose(GPIO_VALUE);
-
-	printf("The GPIO_%s's value is %d \n", gpioNumber, state);
-	return 0;
 }
 
 
@@ -82,43 +50,54 @@ int write_gpio(const char *gpioNumber, int state) {
  * @param gpio: int containing the number of the GPIO
  * @param state: int containing '0' if Output or '1' if Input 
  */
-int init_gpio(const char *gpioNumber, int state) {
-	// Creation:
-	// 		Defining the gpio:
-	FILE *GPIO_CREATION = fopen("/sys/class/gpio/export", "w");
-	fprintf(GPIO_CREATION, gpioNumber);
-	fclose(GPIO_CREATION);
-	printf("--> GPIO created!\n");
+int init_gpio(int gpioNumber, int inOut) {
+	if (gpioNumber <= 27) {
+		// Creation:
+		// 		Defining the gpio:
+		FILE *GPIO_CREATION = fopen("/sys/class/gpio/export", "w");
+		fprintf(GPIO_CREATION, gpioNumber);
+		fclose(GPIO_CREATION);
+		printf("--> GPIO created!\n");
 
 
-	// Setting-up the type state of the gpio (input or output)
-	// 		- Storing the path of the gpio for future writing:
-	int maxSize = 33;
-	char stateFile[maxSize];
-	snprintf(stateFile, maxSize, "/sys/class/gpio/gpio%s/direction", gpioNumber);
+		// Setting-up the type state of the gpio (input or output)
+		// 		- Storing the path of the gpio for future writing:
+		int maxSize = 33;
+		char stateFile[maxSize];
+		snprintf(stateFile, maxSize, "/sys/class/gpio/gpio%d/direction", gpioNumber);
 
-	// 		- Setting-up the gpio:
-	FILE *GPIO_STATE = fopen(stateFile, "w");
-	if (state == 1) {
-		fprintf(GPIO_STATE, "In");
+		// 		- Setting-up the gpio:
+		FILE *GPIO_STATE = fopen(stateFile, "w");
+		if (inOut == 1) {
+			fprintf(GPIO_STATE, "In");
+	 		printf("The GPIO_%s is created as an Input !\n", gpioNumber);
+	
+			fclose(GPIO_STATE);
+
+			// Turning off the GPIO:
+			write_gpio(gpioNumber, 0);
+			return 0;
+		}
+		else if (inOut == 0) {
+			fprintf(GPIO_STATE, "out");
+			printf("The GPIO_%d is created as an Output !\n", gpioNumber);
+
+			fclose(GPIO_STATE);
+
+			// Turning off the GPIO:
+			write_gpio(gpioNumber, 0);
+			return 0;
+		}
+		else {
+			printf("Error in 'init_gpio' from gpio.h/c: 'inOut' needs to be equal to 0 (=Output) or 1 (=Input)!\n");
+			fclose(GPIO_STATE);
+			return 1;
+		}
 	}
 	else {
-		fprintf(GPIO_STATE, "out");
+		printf("Error in 'init_gpio' from gpio.h/c: 'gpioNumber' needs to be <= 27!\n");
+		return 1;
 	}
-	fclose(GPIO_STATE);
-	printf("--> GPIO set as an I/O!\n");
-
-	// Turning off the GPIO:
-	write_gpio(gpioNumber, 0);
-
-	// 		Pretty message:
-	if (state == 0) {
-		printf("The GPIO_%s is created as an Output !\n", gpioNumber);
- 	}
- 	else {
- 		printf("The GPIO_%s is created as an Input !\n", gpioNumber);	
- 	}
- 	return 0;
 }
 
 
@@ -127,17 +106,23 @@ int init_gpio(const char *gpioNumber, int state) {
  * 
  * @param gpio: int containing the number of the GPIO
  */
-int destroy_gpio(const char *gpioNumber) {
-	// Turning off the GPIO:
-	write_gpio(gpioNumber, 0);
-	printf("--> GPIO stoped!\n");
+int destroy_gpio(int gpioNumber) {
+	if (gpioNumber <= 27) {
+		// Turning off the GPIO:
+		write_gpio(gpioNumber, 0);
+		printf("--> GPIO stoped!\n");
 
-	// Closing:
- 	// 		Closing the gpio:
- 	FILE *GPIO_DESTRUCTION = fopen("/sys/class/gpio/unexport", "w");
- 	fprintf(GPIO_DESTRUCTION, gpioNumber);
- 	fclose(GPIO_DESTRUCTION);
+		// Closing:
+	 	// 		Closing the gpio:
+	 	FILE *GPIO_DESTRUCTION = fopen("/sys/class/gpio/unexport", "w");
+	 	fprintf(GPIO_DESTRUCTION, gpioNumber);
+	 	fclose(GPIO_DESTRUCTION);
 
- 	printf("The GPIO_%s was closed !\n", gpioNumber);
- 	return 0;
+	 	printf("The GPIO_%d was closed !\n", gpioNumber);
+	 	return 0;
+	}
+	else {
+		printf("Error in 'destroy_gpio' from gpio.h/c: 'gpioNumber' needs to be <= 27!\n");
+		return 1;
+	}
 }
