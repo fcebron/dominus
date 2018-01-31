@@ -55,7 +55,9 @@ int init_gpio(int gpioNumber, int inOut) {
 		// Creation:
 		// 		Defining the gpio:
 		FILE *GPIO_CREATION = fopen("/sys/class/gpio/export", "w");
-		fprintf(GPIO_CREATION, gpioNumber);
+		char nb[3];
+		snprintf(nb, 3, "%d", gpioNumber);  // cast
+		fprintf(GPIO_CREATION, nb);
 		fclose(GPIO_CREATION);
 		printf("--> GPIO created!\n");
 
@@ -115,7 +117,9 @@ int destroy_gpio(int gpioNumber) {
 		// Closing:
 	 	// 		Closing the gpio:
 	 	FILE *GPIO_DESTRUCTION = fopen("/sys/class/gpio/unexport", "w");
-	 	fprintf(GPIO_DESTRUCTION, gpioNumber);
+	 	char nb[3];
+		snprintf(nb, 3, "%d", gpioNumber);  // cast
+	 	fprintf(GPIO_DESTRUCTION, nb);
 	 	fclose(GPIO_DESTRUCTION);
 
 	 	printf("The GPIO_%d was closed !\n", gpioNumber);
